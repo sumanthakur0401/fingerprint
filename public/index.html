@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fingerprint Authentication</title>
+</head>
+<body>
+  <h1>Fingerprint Authentication</h1>
+  <button id="authButton">Authenticate with Fingerprint</button>
+
+  <script>
+    document.getElementById('authButton').addEventListener('click', async () => {
+      try {
+        const credential = await navigator.credentials.create({
+          publicKey: {
+            challenge: new Uint8Array([/* your server-generated challenge */]),
+            user: {
+              id: new Uint8Array([/* your server-generated user ID */]),
+              name: 'user@example.com', // Replace with the actual user identifier
+              displayName: 'John Doe', // Replace with the actual user name
+            },
+            pubKeyCredParams: [
+              { type: 'public-key', alg: -7 }, // -7 corresponds to "ES256" algorithm
+            ],
+          },
+        });
+
+        // Send the credential data to your server for verification
+        fetch('/verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ credential }),
+        });
+      } catch (error) {
+        console.error('Error during authentication:', error);
+      }
+    });
+  </script>
+</body>
+</html>
