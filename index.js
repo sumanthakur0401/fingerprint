@@ -6,19 +6,20 @@ const port = 3000;
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-app.post('/verify', (req, res) => {
-  const credential = req.body.credential;
+app.post('/verify', async (req, res) => {
+    const credential = req.body.credential;
 
-  // Perform server-side verification of the credential
-  // This is where you would validate the fingerprint against your system
+    // TODO: Perform server-side verification of the credential
+    //  - Validate the fingerprint against your system's stored credentials
+    //  - Use a WebAuthn library for verification tasks
 
-  // If verification is successful, respond with a success message
-  res.json({ success: true });
-
-  // If verification fails, respond with an error message
-  // res.status(401).json({ success: false, error: 'Invalid credential' });
+    if (verificationSuccessful) { // Replace with actual verification logic
+        res.json({ success: true });
+    } else {
+        res.status(401).json({ success: false, error: 'Invalid credential' });
+    }
 });
 
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Server is running at http://localhost:${port}`);
 });
